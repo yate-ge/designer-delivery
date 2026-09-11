@@ -4,20 +4,21 @@
     "owner": "Ge Yate",
     "subtitle": "视觉稿、原型和演示都先挂在这里。"
   },
-  "updatedAt": "2026-09-11T01:50:18Z",
+  "updatedAt": "2026-09-11T01:53:00Z",
   "items": [
     {
       "id": "2026-09-11-first-principles",
       "title": "第一性原则（First Principles）· 巡检",
       "type": "html",
       "status": "ready",
-      "createdAt": "2026-09-11T01:50:18Z",
-      "summary": "知识秘书小时巡检：要点 + 优化建议，附 PDF 备份。",
+      "createdAt": "2026-09-11T01:53:00Z",
+      "summary": "巡检阅读页视觉改版：编辑式排版 + 浅色/深色主题切换，附 PDF。",
       "tags": [
         "knowledge",
         "review",
         "evergreen",
-        "first-principles"
+        "first-principles",
+        "theme"
       ],
       "href": "./items/2026-09-11-first-principles/"
     },
