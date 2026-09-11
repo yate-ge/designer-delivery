@@ -1,170 +1,482 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-Hans" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>第一性原则 · 巡检</title>
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('delivery-theme');
+        var theme = saved || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
   <style>
     :root {
-      color-scheme: dark;
-      --bg: #0a0c10;
-      --paper: #12161d;
-      --fg: #f3efe7;
-      --muted: #9aa3af;
-      --accent: #7dd3c0;
-      --warn: #f0b27a;
-      --line: rgba(243,239,231,.10);
-      --chip: rgba(125,211,192,.12);
+      --font: "SF Pro Text", "PingFang SC", "Noto Sans SC", "Segoe UI", system-ui, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --radius: 22px;
+      --ease: cubic-bezier(.22, 1, .36, 1);
     }
+
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #080a0d;
+      --bg-accent-a: #16303a;
+      --bg-accent-b: #2a1c32;
+      --surface: rgba(18, 22, 29, .88);
+      --surface-solid: #12161d;
+      --fg: #f4f0e8;
+      --muted: #9aa3af;
+      --faint: #6f7885;
+      --accent: #7dd3c0;
+      --accent-soft: rgba(125, 211, 192, .14);
+      --warn: #e8a86a;
+      --warn-soft: rgba(232, 168, 106, .12);
+      --line: rgba(244, 240, 232, .10);
+      --shadow: 0 18px 50px rgba(0, 0, 0, .35);
+      --topbar: rgba(8, 10, 13, .72);
+      --chip-bg: rgba(255,255,255,.04);
+      --number-bg: #182028;
+    }
+
+    html[data-theme="light"] {
+      color-scheme: light;
+      --bg: #f4f1ea;
+      --bg-accent-a: #dceee9;
+      --bg-accent-b: #efe4d8;
+      --surface: rgba(255, 252, 247, .9);
+      --surface-solid: #fffdf9;
+      --fg: #1b222c;
+      --muted: #5d6775;
+      --faint: #8a93a0;
+      --accent: #0f7f6e;
+      --accent-soft: rgba(15, 127, 110, .10);
+      --warn: #b5681f;
+      --warn-soft: rgba(181, 104, 31, .10);
+      --line: rgba(27, 34, 44, .10);
+      --shadow: 0 16px 40px rgba(40, 36, 28, .08);
+      --topbar: rgba(244, 241, 234, .78);
+      --chip-bg: rgba(27, 34, 44, .04);
+      --number-bg: #eef5f3;
+    }
+
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: "SF Pro Text", "PingFang SC", "Noto Sans SC", system-ui, sans-serif;
-      background:
-        radial-gradient(900px 500px at 0% -20%, #1a2c34 0%, transparent 55%),
-        radial-gradient(700px 420px at 100% 0%, #2a1d2f 0%, transparent 50%),
-        var(--bg);
+      min-height: 100vh;
+      font-family: var(--font);
       color: var(--fg);
-      line-height: 1.7;
+      background:
+        radial-gradient(980px 560px at -8% -18%, var(--bg-accent-a) 0%, transparent 58%),
+        radial-gradient(820px 480px at 110% -10%, var(--bg-accent-b) 0%, transparent 52%),
+        var(--bg);
+      line-height: 1.75;
+      transition: background .35s var(--ease), color .25s var(--ease);
     }
+
+    a { color: var(--accent); }
+    code {
+      font-family: var(--mono);
+      font-size: .86em;
+      background: var(--chip-bg);
+      border: 1px solid var(--line);
+      padding: .12em .42em;
+      border-radius: 7px;
+    }
+
     .topbar {
-      position: sticky; top: 0; z-index: 10;
-      backdrop-filter: blur(12px);
-      background: color-mix(in srgb, var(--bg) 78%, transparent);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px) saturate(1.2);
+      background: var(--topbar);
       border-bottom: 1px solid var(--line);
     }
     .topbar-inner {
-      width: min(820px, calc(100% - 32px));
+      width: min(860px, calc(100% - 32px));
       margin: 0 auto;
       padding: 12px 0;
-      display: flex; justify-content: space-between; gap: 12px; align-items: center;
-      font-size: 13px; color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--muted);
     }
-    .topbar a { color: var(--accent); text-decoration: none; }
-    .wrap { width: min(820px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 72px; }
-    .hero {
-      background: color-mix(in srgb, var(--paper) 92%, transparent);
+    .topbar a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+    .topbar a:hover { color: var(--accent); }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      padding: 3px;
+      border-radius: 999px;
       border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 28px 26px;
-      margin-bottom: 22px;
+      background: var(--chip-bg);
+    }
+    .theme-toggle button {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--faint);
+      font: inherit;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .2s ease, color .2s ease;
+    }
+    .theme-toggle button[aria-pressed="true"] {
+      background: var(--surface-solid);
+      color: var(--fg);
+      box-shadow: 0 1px 2px rgba(0,0,0,.08);
+    }
+
+    .wrap {
+      width: min(860px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 80px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 4px);
+      padding: 34px 30px 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: auto -10% -40% auto;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-soft), transparent 70%);
+      pointer-events: none;
     }
     .eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      color: var(--accent); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
-      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      font-size: 12px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 650;
+      margin-bottom: 14px;
     }
-    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent); }
-    h1 { margin: 0 0 10px; font-size: clamp(28px, 5vw, 40px); line-height: 1.15; letter-spacing: -.02em; }
-    .lede { margin: 0; color: var(--muted); max-width: 58ch; }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-soft);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 5.2vw, 44px);
+      line-height: 1.12;
+      letter-spacing: -.03em;
+      font-weight: 680;
+      max-width: 14ch;
+    }
+    .lede {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16.5px;
+      max-width: 52ch;
+    }
     .meta {
-      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 22px;
     }
     .chip {
-      border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px;
-      font-size: 12px; color: var(--muted); background: color-mix(in srgb, var(--paper) 60%, transparent);
-    }
-    .chip strong { color: var(--fg); font-weight: 560; }
-    .grid { display: grid; gap: 14px; }
-    section.card {
-      background: color-mix(in srgb, var(--paper) 92%, transparent);
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
       border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 22px 22px 18px;
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 12px;
+      color: var(--muted);
+      background: var(--chip-bg);
     }
-    h2 {
-      margin: 0 0 12px;
-      font-size: 15px;
-      letter-spacing: .04em;
+    .chip strong { color: var(--fg); font-weight: 600; }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 9px 15px;
+      font-size: 13px;
+      font-weight: 560;
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+      background: var(--accent-soft);
+      color: var(--accent);
+      transition: transform .2s var(--ease), background .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border-color: var(--line);
+    }
+
+    .toc {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .toc a {
+      text-decoration: none;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 14px 12px;
+      transition: border-color .2s ease, color .2s ease, transform .2s var(--ease);
+    }
+    .toc a:hover {
+      color: var(--fg);
+      border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+      transform: translateY(-1px);
+    }
+    .toc .k {
+      display: block;
+      font-size: 11px;
+      letter-spacing: .08em;
       text-transform: uppercase;
       color: var(--accent);
+      margin-bottom: 4px;
       font-weight: 650;
     }
-    ol, ul { margin: 0; padding-left: 1.2em; }
-    li { margin: 0 0 10px; color: color-mix(in srgb, var(--fg) 92%, var(--muted)); }
-    li:last-child { margin-bottom: 0; }
-    .num { color: var(--accent); font-variant-numeric: tabular-nums; font-weight: 650; margin-right: 4px; }
+    .toc .v { font-size: 14px; color: inherit; }
+
+    .grid { display: grid; gap: 14px; }
+    section.card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px 24px 20px;
+      box-shadow: var(--shadow);
+    }
+    h2 {
+      margin: 0 0 14px;
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    h2.warn { color: var(--warn); }
+
+    .note-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .note-list li {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 12px;
+      padding: 12px 0;
+      border-top: 1px solid var(--line);
+    }
+    .note-list li:first-child { border-top: 0; padding-top: 0; }
+    .note-list .label { color: var(--faint); font-size: 12px; padding-top: 2px; }
+    .note-list .value { color: var(--fg); }
+
+    .points { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+    .points li {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 12px;
+      border-radius: 16px;
+      background: var(--chip-bg);
+      border: 1px solid var(--line);
+    }
+    .points .n {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--number-bg);
+      color: var(--accent);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      font-size: 13px;
+    }
+    .points .t { color: color-mix(in srgb, var(--fg) 94%, var(--muted)); font-size: 15px; }
+
     .callout {
-      margin-top: 12px;
+      margin-top: 14px;
       border-left: 3px solid var(--accent);
-      padding: 10px 12px;
-      background: var(--chip);
-      border-radius: 0 12px 12px 0;
+      padding: 12px 14px;
+      background: var(--accent-soft);
+      border-radius: 0 14px 14px 0;
       color: var(--fg);
+      font-size: 14.5px;
     }
-    .warn-title { color: var(--warn); }
-    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
-      background: color-mix(in srgb, var(--accent) 12%, transparent);
-      color: var(--accent); text-decoration: none;
-      border-radius: 999px; padding: 8px 14px; font-size: 13px;
+
+    .advice { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .advice li {
+      padding: 14px 14px 14px 16px;
+      border-radius: 16px;
+      background: var(--warn-soft);
+      border: 1px solid color-mix(in srgb, var(--warn) 22%, var(--line));
     }
-    footer { margin-top: 18px; color: var(--muted); font-size: 12px; }
-    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; background: color-mix(in srgb, var(--fg) 8%, transparent); padding: 1px 6px; border-radius: 6px; }
+    .advice .step {
+      display: inline-block;
+      margin-bottom: 6px;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--warn);
+      font-weight: 700;
+    }
+    .advice .body { color: color-mix(in srgb, var(--fg) 94%, var(--muted)); font-size: 14.5px; }
+
+    footer {
+      margin-top: 22px;
+      color: var(--faint);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 720px) {
+      .hero { padding: 26px 20px 22px; }
+      .toc { grid-template-columns: 1fr; }
+      .note-list li { grid-template-columns: 1fr; gap: 4px; }
+      section.card { padding: 20px 16px 16px; }
+      h1 { max-width: none; }
+    }
   </style>
 </head>
 <body>
   <div class="topbar">
     <div class="topbar-inner">
       <a href="../../">← 返回交付台</a>
-      <span>知识秘书 × designer · 小时巡检</span>
+      <div class="theme-toggle" role="group" aria-label="主题切换">
+        <button type="button" data-theme-set="light" aria-pressed="false">浅色</button>
+        <button type="button" data-theme-set="dark" aria-pressed="true">深色</button>
+      </div>
     </div>
   </div>
+
   <div class="wrap">
     <header class="hero">
       <div class="eyebrow"><span class="dot"></span> Evergreen review</div>
-      <h1>第一性原则（First Principles）</h1>
+      <h1>第一性原则</h1>
       <p class="lede">把「从底层事实重构解法」转成可复用的产品 / 研究判断工具，并接到锚点功能与 HCI contribution。</p>
       <div class="meta">
         <span class="chip"><strong>路径</strong> 第一性原则.md</span>
         <span class="chip"><strong>Type</strong> evergreen</span>
         <span class="chip"><strong>日期</strong> 2026-09-11</span>
+        <span class="chip"><strong>来源</strong> 知识秘书巡检</span>
       </div>
       <div class="actions">
         <a class="btn" href="./review.pdf">下载 PDF 备份</a>
+        <a class="btn btn-ghost" href="#advice">看优化建议</a>
       </div>
     </header>
 
+    <nav class="toc" aria-label="本页导航">
+      <a href="#note"><span class="k">01</span><span class="v">本条笔记</span></a>
+      <a href="#points"><span class="k">02</span><span class="v">知识要点</span></a>
+      <a href="#advice"><span class="k">03</span><span class="v">优化建议</span></a>
+    </nav>
+
     <div class="grid">
-      <section class="card">
+      <section class="card" id="note">
         <h2>本条笔记</h2>
-        <ul>
-          <li><strong>标题：</strong>第一性原则（First Principles）</li>
-          <li><strong>路径：</strong><code>第一性原则.md</code></li>
-          <li><strong>Type：</strong>evergreen</li>
-          <li><strong>定位：</strong>把「从底层事实重构解法」转成可复用的产品 / 研究判断工具，并接到锚点功能与 HCI contribution。</li>
+        <ul class="note-list">
+          <li><span class="label">标题</span><span class="value">第一性原则（First Principles）</span></li>
+          <li><span class="label">路径</span><span class="value"><code>第一性原则.md</code></span></li>
+          <li><span class="label">Type</span><span class="value">evergreen</span></li>
+          <li><span class="label">定位</span><span class="value">把「从底层事实重构解法」转成可复用的产品 / 研究判断工具，并接到锚点功能与 HCI contribution。</span></li>
         </ul>
       </section>
 
-      <section class="card">
+      <section class="card" id="points">
         <h2>知识要点</h2>
-        <ol>
-          <li><span class="num">1.</span>第一性原则 = 拆到不可再拆的客观前提，再自下而上重构；核心三步是<strong>质疑假设 → 分解要素 → 从零构建</strong>。</li>
-          <li><span class="num">2.</span>产品用法可压成一问：「这个观点 / 产品要成立，最核心必须改变的底层事实是什么？」找不到底层变化，多半只是愿景或类比。</li>
-          <li><span class="num">3.</span>判断流程：抽掉口号 → 追问底层变量 → 检验变量是否真变 → 再看产品是否抓住该变化并转成可感知价值。</li>
-          <li><span class="num">4.</span>对 AI 眼镜：不问「能做哪些功能」，而问相对手机 / 手表真正由眼镜形态带来的变化（第一人称感知、always-on、低侵入提示、空间锚定、与 agent 持续连接等）。</li>
-          <li><span class="num">5.</span>与 anchoring effect 的分工：第一性管内部「凭什么成立」，锚点管外部「用户把它理解成什么」。</li>
-          <li><span class="num">6.</span>thinking model 相关笔记几乎空白，本篇实际承载了主要内容。</li>
+        <ol class="points">
+          <li><span class="n">1</span><div class="t">第一性原则 = 拆到不可再拆的客观前提，再自下而上重构；核心三步是<strong>质疑假设 → 分解要素 → 从零构建</strong>。</div></li>
+          <li><span class="n">2</span><div class="t">产品用法可压成一问：「这个观点 / 产品要成立，最核心必须改变的底层事实是什么？」找不到底层变化，多半只是愿景或类比。</div></li>
+          <li><span class="n">3</span><div class="t">判断流程：抽掉口号 → 追问底层变量 → 检验变量是否真变 → 再看产品是否抓住该变化并转成可感知价值。</div></li>
+          <li><span class="n">4</span><div class="t">对 AI 眼镜：不问「能做哪些功能」，而问相对手机 / 手表真正由眼镜形态带来的变化（第一人称感知、always-on、低侵入提示、空间锚定、与 agent 持续连接等）。</div></li>
+          <li><span class="n">5</span><div class="t">与 anchoring effect 的分工：第一性管内部「凭什么成立」，锚点管外部「用户把它理解成什么」。</div></li>
+          <li><span class="n">6</span><div class="t">thinking model 相关笔记几乎空白，本篇实际承载了主要内容。</div></li>
         </ol>
         <div class="callout">一句话检验：找不到必须改变的底层事实，就还不是第一性推理。</div>
       </section>
 
-      <section class="card">
-        <h2 class="warn-title">优化建议</h2>
-        <ol>
-          <li><span class="num">1.</span>删除或压缩：「一些 gpt 生成的 case」整表；其中前臂分辨率 ≈5 mm 等数字与公开人因文献冲突，削弱可信度。</li>
-          <li><span class="num">2.</span>添加可核验引用（待确认）：Posterior Analytics + SEP Aristotle’s Metaphysics；可穿戴触觉可核 Morioka、Mahns et al. 2006、Appl. Sci. 2019 DOI <code>10.3390/app9204329</code>。</li>
-          <li><span class="num">3.</span>内容重构：把 2026-06-18「产品判断流程 + AI 眼镜 + 锚点关系」提成主线；开头定义压短；给 anchoring effect 补回链。</li>
-          <li><span class="num">4.</span>增量补充：给 thinking model 写几行摘要或拿掉空链；用真实 Assumption→Why→Fact→Design Choice 短例替换 GPT case；修 ModifiedTime frontmatter 规范。</li>
+      <section class="card" id="advice">
+        <h2 class="warn">优化建议</h2>
+        <ol class="advice">
+          <li>
+            <span class="step">建议 01 · 清理</span>
+            <div class="body">删除或压缩：「一些 gpt 生成的 case」整表；其中前臂分辨率 ≈5 mm 等数字与公开人因文献冲突，削弱可信度。</div>
+          </li>
+          <li>
+            <span class="step">建议 02 · 引用</span>
+            <div class="body">添加可核验引用（待确认）：Posterior Analytics + SEP Aristotle’s Metaphysics；可穿戴触觉可核 Morioka、Mahns et al. 2006、Appl. Sci. 2019 DOI <code>10.3390/app9204329</code>。</div>
+          </li>
+          <li>
+            <span class="step">建议 03 · 结构</span>
+            <div class="body">内容重构：把 2026-06-18「产品判断流程 + AI 眼镜 + 锚点关系」提成主线；开头定义压短；给 anchoring effect 补回链。</div>
+          </li>
+          <li>
+            <span class="step">建议 04 · 增量</span>
+            <div class="body">给 thinking model 写几行摘要或拿掉空链；用真实 Assumption→Why→Fact→Design Choice 短例替换 GPT case；修 ModifiedTime frontmatter 规范。</div>
+          </li>
         </ol>
       </section>
     </div>
 
     <footer>
-      由知识秘书巡检 · designer 排版交付 · 源文件 <code>items/2026-09-11-first-principles/</code>
+      由知识秘书巡检 · designer 视觉改版 · 支持浅色 / 深色 · 源文件 <code>items/2026-09-11-first-principles/</code>
     </footer>
   </div>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-theme-set]'));
+
+      function apply(theme) {
+        root.setAttribute('data-theme', theme);
+        try { localStorage.setItem('delivery-theme', theme); } catch (e) {}
+        buttons.forEach(function (btn) {
+          btn.setAttribute('aria-pressed', String(btn.getAttribute('data-theme-set') === theme));
+        });
+      }
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          apply(btn.getAttribute('data-theme-set'));
+        });
+      });
+
+      apply(root.getAttribute('data-theme') || 'dark');
+    })();
+  </script>
 </body>
 </html>
