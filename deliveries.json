@@ -1,1 +1,38 @@
-placeholder
+{
+  "site": {
+    "title": "designer · 交付台",
+    "owner": "Ge Yate",
+    "subtitle": "视觉稿、原型和演示都先挂在这里。"
+  },
+  "updatedAt": "2026-09-11T01:50:18Z",
+  "items": [
+    {
+      "id": "2026-09-11-first-principles",
+      "title": "第一性原则（First Principles）· 巡检",
+      "type": "html",
+      "status": "ready",
+      "createdAt": "2026-09-11T01:50:18Z",
+      "summary": "知识秘书小时巡检：要点 + 优化建议，附 PDF 备份。",
+      "tags": [
+        "knowledge",
+        "review",
+        "evergreen",
+        "first-principles"
+      ],
+      "href": "./items/2026-09-11-first-principles/"
+    },
+    {
+      "id": "welcome",
+      "title": "交付台已上线",
+      "type": "note",
+      "status": "ready",
+      "createdAt": "2026-09-11T00:35:00Z",
+      "summary": "以后任务里需要视觉演示时，我会更新这一页，并在聊天里丢给你最新链接。",
+      "tags": [
+        "system",
+        "setup"
+      ],
+      "href": "./items/welcome/"
+    }
+  ]
+}
