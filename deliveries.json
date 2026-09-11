@@ -4,15 +4,15 @@
     "owner": "Ge Yate",
     "subtitle": "视觉稿、原型和演示都先挂在这里。"
   },
-  "updatedAt": "2026-09-11T01:53:00Z",
+  "updatedAt": "2026-09-11T01:55:01Z",
   "items": [
     {
       "id": "2026-09-11-first-principles",
-      "title": "第一性原则（First Principles）· 巡检",
+      "title": "第一性原则（First Principles）· 正文渲染",
       "type": "html",
       "status": "ready",
-      "createdAt": "2026-09-11T01:53:00Z",
-      "summary": "巡检阅读页视觉改版：编辑式排版 + 浅色/深色主题切换，附 PDF。",
+      "createdAt": "2026-09-11T01:55:01Z",
+      "summary": "已渲染 Obsidian 笔记正文（含图片与表格），保留浅色/深色切换。",
       "tags": [
         "knowledge",
         "review",
