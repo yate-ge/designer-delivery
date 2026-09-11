@@ -1,1 +1,170 @@
-SEE_FILE
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第一性原则 · 巡检</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0a0c10;
+      --paper: #12161d;
+      --fg: #f3efe7;
+      --muted: #9aa3af;
+      --accent: #7dd3c0;
+      --warn: #f0b27a;
+      --line: rgba(243,239,231,.10);
+      --chip: rgba(125,211,192,.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "SF Pro Text", "PingFang SC", "Noto Sans SC", system-ui, sans-serif;
+      background:
+        radial-gradient(900px 500px at 0% -20%, #1a2c34 0%, transparent 55%),
+        radial-gradient(700px 420px at 100% 0%, #2a1d2f 0%, transparent 50%),
+        var(--bg);
+      color: var(--fg);
+      line-height: 1.7;
+    }
+    .topbar {
+      position: sticky; top: 0; z-index: 10;
+      backdrop-filter: blur(12px);
+      background: color-mix(in srgb, var(--bg) 78%, transparent);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar-inner {
+      width: min(820px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 12px 0;
+      display: flex; justify-content: space-between; gap: 12px; align-items: center;
+      font-size: 13px; color: var(--muted);
+    }
+    .topbar a { color: var(--accent); text-decoration: none; }
+    .wrap { width: min(820px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 72px; }
+    .hero {
+      background: color-mix(in srgb, var(--paper) 92%, transparent);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 28px 26px;
+      margin-bottom: 22px;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--accent); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent); }
+    h1 { margin: 0 0 10px; font-size: clamp(28px, 5vw, 40px); line-height: 1.15; letter-spacing: -.02em; }
+    .lede { margin: 0; color: var(--muted); max-width: 58ch; }
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px;
+    }
+    .chip {
+      border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px;
+      font-size: 12px; color: var(--muted); background: color-mix(in srgb, var(--paper) 60%, transparent);
+    }
+    .chip strong { color: var(--fg); font-weight: 560; }
+    .grid { display: grid; gap: 14px; }
+    section.card {
+      background: color-mix(in srgb, var(--paper) 92%, transparent);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 22px 22px 18px;
+    }
+    h2 {
+      margin: 0 0 12px;
+      font-size: 15px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 650;
+    }
+    ol, ul { margin: 0; padding-left: 1.2em; }
+    li { margin: 0 0 10px; color: color-mix(in srgb, var(--fg) 92%, var(--muted)); }
+    li:last-child { margin-bottom: 0; }
+    .num { color: var(--accent); font-variant-numeric: tabular-nums; font-weight: 650; margin-right: 4px; }
+    .callout {
+      margin-top: 12px;
+      border-left: 3px solid var(--accent);
+      padding: 10px 12px;
+      background: var(--chip);
+      border-radius: 0 12px 12px 0;
+      color: var(--fg);
+    }
+    .warn-title { color: var(--warn); }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      color: var(--accent); text-decoration: none;
+      border-radius: 999px; padding: 8px 14px; font-size: 13px;
+    }
+    footer { margin-top: 18px; color: var(--muted); font-size: 12px; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; background: color-mix(in srgb, var(--fg) 8%, transparent); padding: 1px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a href="../../">← 返回交付台</a>
+      <span>知识秘书 × designer · 小时巡检</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <header class="hero">
+      <div class="eyebrow"><span class="dot"></span> Evergreen review</div>
+      <h1>第一性原则（First Principles）</h1>
+      <p class="lede">把「从底层事实重构解法」转成可复用的产品 / 研究判断工具，并接到锚点功能与 HCI contribution。</p>
+      <div class="meta">
+        <span class="chip"><strong>路径</strong> 第一性原则.md</span>
+        <span class="chip"><strong>Type</strong> evergreen</span>
+        <span class="chip"><strong>日期</strong> 2026-09-11</span>
+      </div>
+      <div class="actions">
+        <a class="btn" href="./review.pdf">下载 PDF 备份</a>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <h2>本条笔记</h2>
+        <ul>
+          <li><strong>标题：</strong>第一性原则（First Principles）</li>
+          <li><strong>路径：</strong><code>第一性原则.md</code></li>
+          <li><strong>Type：</strong>evergreen</li>
+          <li><strong>定位：</strong>把「从底层事实重构解法」转成可复用的产品 / 研究判断工具，并接到锚点功能与 HCI contribution。</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>知识要点</h2>
+        <ol>
+          <li><span class="num">1.</span>第一性原则 = 拆到不可再拆的客观前提，再自下而上重构；核心三步是<strong>质疑假设 → 分解要素 → 从零构建</strong>。</li>
+          <li><span class="num">2.</span>产品用法可压成一问：「这个观点 / 产品要成立，最核心必须改变的底层事实是什么？」找不到底层变化，多半只是愿景或类比。</li>
+          <li><span class="num">3.</span>判断流程：抽掉口号 → 追问底层变量 → 检验变量是否真变 → 再看产品是否抓住该变化并转成可感知价值。</li>
+          <li><span class="num">4.</span>对 AI 眼镜：不问「能做哪些功能」，而问相对手机 / 手表真正由眼镜形态带来的变化（第一人称感知、always-on、低侵入提示、空间锚定、与 agent 持续连接等）。</li>
+          <li><span class="num">5.</span>与 anchoring effect 的分工：第一性管内部「凭什么成立」，锚点管外部「用户把它理解成什么」。</li>
+          <li><span class="num">6.</span>thinking model 相关笔记几乎空白，本篇实际承载了主要内容。</li>
+        </ol>
+        <div class="callout">一句话检验：找不到必须改变的底层事实，就还不是第一性推理。</div>
+      </section>
+
+      <section class="card">
+        <h2 class="warn-title">优化建议</h2>
+        <ol>
+          <li><span class="num">1.</span>删除或压缩：「一些 gpt 生成的 case」整表；其中前臂分辨率 ≈5 mm 等数字与公开人因文献冲突，削弱可信度。</li>
+          <li><span class="num">2.</span>添加可核验引用（待确认）：Posterior Analytics + SEP Aristotle’s Metaphysics；可穿戴触觉可核 Morioka、Mahns et al. 2006、Appl. Sci. 2019 DOI <code>10.3390/app9204329</code>。</li>
+          <li><span class="num">3.</span>内容重构：把 2026-06-18「产品判断流程 + AI 眼镜 + 锚点关系」提成主线；开头定义压短；给 anchoring effect 补回链。</li>
+          <li><span class="num">4.</span>增量补充：给 thinking model 写几行摘要或拿掉空链；用真实 Assumption→Why→Fact→Design Choice 短例替换 GPT case；修 ModifiedTime frontmatter 规范。</li>
+        </ol>
+      </section>
+    </div>
+
+    <footer>
+      由知识秘书巡检 · designer 排版交付 · 源文件 <code>items/2026-09-11-first-principles/</code>
+    </footer>
+  </div>
+</body>
+</html>
